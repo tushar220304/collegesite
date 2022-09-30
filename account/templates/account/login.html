@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>teacher login</title>
+	<style type="text/css">
+		p {
+			border: 2px dashed;
+			margin: 5px;
+		}
+		p input[type="submit"] {
+			background-color: yellow;
+			font-size: 15px;
+		}
+	</style>
+</head>
+<body>
+	<form method="post">
+		{{ form.as_p }}
+		{% csrf_token %}
+		<p><input type="submit" value="Log in"></p>
+	</form>
+</body>
+</html>
