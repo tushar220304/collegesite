@@ -1,14 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-from .forms import LoginForm, StudentCreateForm
+from .forms import LoginForm, StudentCreateForm, StudentLoginForm
 from .models import Myuser, student
 from django.contrib.auth.models import User
 from datetime import date
 import shortuuid
 
 def userpassgen(name, dob):
-    return str(name) + str(dob.day) + str(dob.month) + str(dob.year)
+	password = str(name) + str(dob.day) + str(dob.month) + str(dob.year)
+	print('this is a user password : ', password)
+	return password
 
 def enrollgen(num):
 	today = date.today()
@@ -48,18 +50,43 @@ def studentform(request):
 						last_name=cd['last_name'],
 						email=cd['email'],
 						username=cd['first_name'] + cd['last_name'] + unique_id,
-						password=cd['first_name'] + unique_id)
+						password=userpassgen(cd['first_name'], cd['dob']))
 			user.save()
 			Myuser(user=user,isStudent=True).save()
 			Student = student(enrollmentno=enrollgen(user.id),
 							  user=user,
 							  Courses=cd['course'],
 							  phone_no=cd['phone_no'],
-							  dob=cd['dob'],
-							  password=userpassgen(cd['first_name'], cd['dob']))
+							  dob=cd['dob'])
 			Student.save()
 			return HttpResponse('form is submitted succesfully.')
 	else :
 		# return HttpResponse('it is a get request')
 		form = StudentCreateForm()
 		return render(request ,'account/studentcreate.html', {'form': form})
+
+
+def stlogin(request):
+	if request.method == 'POST':
+		form = StudentLoginForm(request.POST)
+		if form.is_valid():
+			cd = form.cleaned_data
+			username = student.objects.get(enrollmentno = cd['enrollmentno']).user.username
+			password = cd['password']
+			user = authenticate(request, 
+									username = username,
+									password = password)
+			if user is not None:
+				if user.is_active:
+					if user.myuser.isStudent:
+						login(request, user)
+						return HttpResponse(f'you are student {user.username}')
+					else:
+						return HttpResponse('Sorry your are not allowed to login bcoz you are a teacher')
+				else:
+					return HttpResponse('Disabled Account')
+			else:
+				return HttpResponse('Invalid Login')
+	else:
+		form = StudentLoginForm()
+		return render(request, 'account/studentlogin.html', {'form': form})

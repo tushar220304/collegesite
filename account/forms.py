@@ -1,6 +1,4 @@
 from django import forms
-# from django.contrib.auth.models import User
-# from .models import Myuser, student
 
 course_choice = (
 		('bca', 'BCA'),
@@ -19,3 +17,7 @@ class StudentCreateForm(forms.Form):
 	phone_no = forms.CharField()
 	course = forms.ChoiceField(choices=course_choice)
 	dob = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+
+class StudentLoginForm(forms.Form):
+	enrollmentno = forms.CharField(max_length=100)
+	password = forms.CharField(widget=forms.PasswordInput)

@@ -7,4 +7,5 @@ app_name = 'account'
 urlpatterns = [
     path('', views.home, name='homepage'),
     path('student/', views.studentform, name="student"),
+    path('studentlogin/', views.stlogin, name='studentlogin'),
 ]

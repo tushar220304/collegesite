@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Student Login</title>
+</head>
+<body>
+	{% if request.user is None %}
+	<h1>Student login here {{ request.user }}</h1>
+	<form method="post">
+		{{ form.as_p }}
+		{% csrf_token %}
+		<p><input type="submit" name="login here"></p>
+	</form>
+	{% else %}
+	<h1>you are already loggedin</h1>
+	{% endif %}
+</body>
+</html>

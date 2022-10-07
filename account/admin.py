@@ -21,6 +21,9 @@ class CustomUserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 
-admin.site.register(Myuser)
+# admin.site.register(Myuser)
 
-admin.site.register(student)
+# admin.site.register(student)
+@admin.register(student)
+class StudentAdmin(admin.ModelAdmin):
+    readonly_fields = ('user',)
