@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from course.models import  Course
 from shortuuid.django_fields import ShortUUIDField
 from django.core.exceptions import ValidationError
 
@@ -18,15 +19,10 @@ class Myuser(models.Model):
 			raise ValidationError("User cannot be the both student and teacher")
 
 class student(models.Model):
-	course_choice = (
-		('bca', 'BCA'),
-		('bba', 'BBA'),
-		('bcom', 'BCom'),
-	)
 	enrollmentno = models.CharField(unique=True, max_length=100)
 	user = models.ForeignKey(User, related_name='student',on_delete=models.CASCADE)
 	dob = models.DateField(blank=True, null=True)
-	Courses = models.CharField(choices=course_choice, max_length=200)
+	Courses = models.ForeignKey(Course, related_name='studentenrolled', on_delete=models.CASCADE)
 	phone_no = models.CharField(max_length=12)
 
 	def __str__(self):

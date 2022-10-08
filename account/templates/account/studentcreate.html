@@ -9,6 +9,7 @@
 	<h1>create student form </h1>
 	<form method="post">
 		{{ form.as_p }}
+		{{ course_field.as_p }}
 		{% csrf_token %}
 		<p><input type="submit" name="create student"></p>
 	</form>

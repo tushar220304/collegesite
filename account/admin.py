@@ -26,4 +26,4 @@ admin.site.register(User, CustomUserAdmin)
 # admin.site.register(student)
 @admin.register(student)
 class StudentAdmin(admin.ModelAdmin):
-    readonly_fields = ('user',)
+    readonly_fields = ('user', 'Courses', )
